@@ -1,3 +1,5 @@
+using System;
+
 namespace Mailgen.Templates.Models;
 
 public struct TableColumnModel<TRow>
