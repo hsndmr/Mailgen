@@ -3,7 +3,7 @@
         <TargetFramework>net8.0</TargetFramework>
         <PackageId>Mailgen</PackageId>
         <Nullable>enable</Nullable>
-        <Version>0.0.1</Version>
+        <Version>0.0.2</Version>
         <Author>demirjs</Author>
         <Product>Mailgen</Product>
         <IsPackable>true</IsPackable>
