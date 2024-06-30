@@ -1,0 +1,202 @@
+@typeparam TRow
+@inherits BaseTemplate<TRow>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <style type="text/css" rel="stylesheet" media="all">
+        @@media only screen and (max-width: 600px) {
+            .email-body_inner, .email-footer {
+                width: 100% !important;
+            }
+        }
+        @@media only screen and (max-width: 500px) {
+            .button {
+                width: 100% !important;
+            }
+        }
+    </style>
+</head>
+<body dir="@TemplateModel.Body.TextDirection" style="width: 100%; height: 100%; margin: 0; line-height: 1.4;background-color:#F2F4F6;color: #74787E;-webkit-text-size-adjust:none;@(GetCommonStyle())">
+<!-- Email Wrapper -->
+<table style="width:100%;margin:0;padding:0;background-color: #F2F4F6;@(GetCommonStyle())" width="100%" cellpadding="0" cellspacing="0">
+    <tr>
+        <td style="@GetCommonStyle()" align="center">
+            <!-- Email Content -->
+            <table style="width: 100%; margin:0; padding: 0; background-color: #F2F4F6;@(GetCommonStyle())" width="100%" cellpadding="0" cellspacing="0">
+                <!-- Logo -->
+                <tr>
+                    <!-- Email Masthead -->
+                    <td style="padding:25px 0;text-align: center;@(GetCommonStyle())">
+                        <!-- Email Masthead Name -->
+                        <a style="font-size: 16px;font-weight: bold;color: #2F3133;text-decoration: none;text-shadow: 0 1px 0 white;@GetCommonStyle()" href="@TemplateModel.Options.Product.Link" target="_blank">
+                            @if (TemplateModel.Options.Product.Logo != null)
+                            {
+                                @if (TemplateModel.Options.Product.LogoHeight != null)
+                                {
+                                    <img src="@TemplateModel.Options.Product.Logo" style="height: @TemplateModel.Options.Product.LogoHeight;@(GetCommonStyle())" alt=""/>
+                                }
+                                else
+                                {
+                                    <!-- Email Logo -->
+                                    <img src="@TemplateModel.Options.Product.Logo" style="max-height: 50px;@GetCommonStyle()" alt=""/>
+                                }
+                            }
+                            else
+                            {
+                                @TemplateModel.Options.Product.Name
+                            }
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <!-- Email Body -->
+                    <td style="width: 100%;margin: 0;padding: 0;border-top: 1px solid #EDEFF2;border-bottom: 1px solid #EDEFF2;background-color: #FFF;@(GetCommonStyle())" width="100%">
+                        <!-- Email Body Inner -->
+                        <table style="width: 570px;margin: 0 auto;padding: 0;text-align: center;@(GetCommonStyle())" align="center" width="570" cellpadding="0" cellspacing="0">
+                            <tr>
+                                <!-- Content Cell -->
+                                <td style="padding: 33px;@(GetCommonStyle())" class="content-cell">
+                                    @if (TemplateModel.Body.Title != null)
+                                    {
+                                        <h1 style="text-align:left;margin-top:0;color:  #2F3133;font-size: 19px;font-weight: bold;@(GetCommonStyle())">@TemplateModel.Body.Title</h1>
+                                    }
+
+                                    @if (TemplateModel.Body.Intros != null)
+                                    {
+                                        @foreach (var intro in TemplateModel.Body.Intros)
+                                        {
+                                            <p style="text-align:left;@GetCommonStyle() @GetPTagStyle()">@intro</p>
+                                        }
+                                    }
+                                    @if (TemplateModel.Body.Dictionary != null)
+                                    {
+                                        <!-- Body Dictionary -->
+                                        <dl style="width: 100%;overflow: hidden;margin: 20px auto 10px;padding: 0;@(GetCommonStyle())">
+                                            @foreach (var item in TemplateModel.Body.Dictionary)
+                                            {
+                                                <dt style="clear:both;color: #000;font-weight: bold;(@GetCommonStyle())">@item.Key</dt>
+                                                <dd style="margin-left: 0;margin-bottom: 10px;(@GetCommonStyle())">@item.Value</dd>
+                                            }
+                                        </dl>
+                                    }
+                                    <!-- Table -->
+                                    @if (TemplateModel.Body.Tables != null)
+                                    {
+                                        @foreach (var table in TemplateModel.Body.Tables)
+                                        {
+                                            @if (table.Title != null)
+                                            {
+                                                <h2 style="margin-top:0;color: #2F3133;font-size: 19px;font-weight: bold;@(GetCommonStyle())">@table.Title</h2>
+                                            }
+
+                                            <!-- Data Wrapper -->
+                                            <table style="width: 100%;margin: 30px 0 0 0;padding: 0 0 35px 0;@(GetCommonStyle())" cellpadding="0" cellspacing="0" width="100%">
+                                                <tr>
+                                                    <td style="@(GetCommonStyle())" colspan="2">
+                                                        <!-- Data Table -->
+                                                        <table style="width: 100%;margin: 0;@(GetCommonStyle())" cellpadding="0" cellspacing="0" width="100%">
+                                                            <tr>
+                                                                @foreach (var column in table.Columns)
+                                                                {
+                                                                    <th @attributes=GetColumnAttributes(column)>
+                                                                        <p style="margin:0;color:#9BA2AB;font-size:12px;@(GetCommonStyle())">@column.Header</p>
+                                                                    </th>
+                                                                }
+                                                            </tr>
+                                                            @foreach (var row in table.Rows)
+                                                            {
+                                                                <tr>
+                                                                    @foreach (var cell in table.Columns)
+                                                                    {
+                                                                        <td @attributes="@(GetRowAttributes(cell))">
+                                                                            @cell.ValueSelector(row)
+                                                                        </td>
+                                                                    }
+                                                                </tr>
+                                                            }
+                                                        </table>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        }
+                                    }
+                                    <!-- Actions -->
+                                    @if (TemplateModel.Body.Actions != null)
+                                    {
+                                        @foreach (var action in TemplateModel.Body.Actions)
+                                        {
+                                            @if (action.Instructions != null)
+                                            {
+                                                <p style="text-align:left;@GetCommonStyle() @GetPTagStyle()">@action.Instructions</p>
+                                            }
+
+                                            <!-- Body Action -->
+                                            <table style="width: 100%;margin: 30px auto;padding: 0;text-align: center" align="center" cellpadding="0" cellspacing="0">
+                                                <tr>
+                                                    <td align="center">
+                                                        <a href="@action.Button.Link" style="display:inline-block;width: 200px; border-radius:3px;color: #FFFFFF; font-size: 15px;line-height: 45px;text-align: center;text-decoration:none;-webkit-text-size-adjust: none;background-color: @(action.Button.Color);@(GetCommonStyle())" target="_blank">
+                                                            @action.Button.Text
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        }
+                                    }
+                                    <!-- Outros -->
+                                    @if (TemplateModel.Body.Outro != null)
+                                    {
+                                        @foreach (var outro in TemplateModel.Body.Outro)
+                                        {
+                                            <p style="text-align:left;@GetCommonStyle() @GetPTagStyle()">@outro</p>
+                                        }
+                                    }
+                                    <!-- Signature -->
+                                    @if (TemplateModel.Body.Signature != null)
+                                    {
+                                        <p style="text-align: left;@GetPTagStyle() @GetCommonStyle()">
+                                            @(TemplateModel.Body.Signature + ",")
+                                            <br/>
+                                            @(TemplateModel.Options.Product.Name)
+                                        </p>
+                                    }
+                                </td >
+                            </tr >
+                        </table >
+                    </td >
+                </tr >
+                <tr>
+                    <td style="@GetCommonStyle()">
+                        <table style="width: 570px;margin: 0 auto;padding: 0;text-align: center;" align="center" cellpadding="0" cellspacing="0" width="570">
+                            <tr>
+                                <td style="padding:35px;@GetCommonStyle()">
+                                    <p style="font-size: 12px;margin-top: 0;color:#aeaeae;line-height: 1.5em;@GetCommonStyle()">
+                                        @if (TemplateModel.Options.Product.CopyrightLeft != null)
+                                        {
+                                            @(TemplateModel.Options.Product.CopyrightLeft + " ")
+                                        }
+                                        <a style="color: #3869d4;" href="@TemplateModel.Options.Product.Link">
+                                            @(TemplateModel.Options.Product.Name + ".")
+                                        </a>
+                                        @if (TemplateModel.Options.Product.CopyrightRight != null)
+                                        {
+                                            @(" " + TemplateModel.Options.Product.CopyrightRight)
+                                        }
+                                    </p>
+                                </td>
+                            </tr>
+                        </table>
+
+                    </td>
+                </tr>
+            </table >
+        </td >
+    </tr >
+</table >
+</body >
+</html >
+
+@code {
+}

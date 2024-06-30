@@ -1,0 +1,47 @@
+@using Mailgen.Templates.Models
+@typeparam TRow
+
+@code {
+    [Parameter] public TemplateModel<TRow> TemplateModel { get; set; }
+
+    protected IDictionary<string, object> GetColumnAttributes(TableColumnModel<TRow> column)
+    {
+        var attributes = new Dictionary<string, object>();
+        if (column.Width != null)
+        {
+            attributes["width"] = column.Width;
+        }
+
+        var textAlign = column.Align ?? "left";
+
+        attributes["style"] = $"padding:0 5px;border-bottom:1px solid #EDEFF2; text-align: {textAlign};{GetCommonStyle()}";
+
+
+        return attributes;
+    }
+
+
+    protected IDictionary<string, object> GetRowAttributes(TableColumnModel<TRow> column)
+    {
+        var attributes = new Dictionary<string, object>();
+
+        var textAlign = column.Align ?? "left";
+        attributes["style"] = $"text-align: {textAlign};padding:10px 5px;color:#74787E;font-size:15px;line-height:18px;{GetCommonStyle()}";
+
+
+        return attributes;
+    }
+
+
+    protected string GetCommonStyle()
+    {
+        return "font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif;box-sizing:border-box;-webkit-box-sizing:border-box";
+    }
+
+
+    protected string GetPTagStyle()
+    {
+        return "margin-top:0;color: #74787E;font-size: 16px;line-height: 1.5em;";
+    }
+
+}

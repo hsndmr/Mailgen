@@ -1,0 +1,15 @@
+# Build results
+**/obj/
+**/bin/
+
+
+# Rider
+.idea/
+.idea/*
+
+
+# OS-specific files
+.DS_Store
+.DS_Store?
+
+Mailgen.sln.DotSettings.user
