@@ -1,8 +1,15 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
     <PropertyGroup>
         <TargetFramework>net8.0</TargetFramework>
-        <ImplicitUsings>enable</ImplicitUsings>
+        <PackageId>Mailgen</PackageId>
         <Nullable>enable</Nullable>
+        <Version>0.0.1</Version>
+        <Author>demirjs</Author>
+        <Product>Mailgen</Product>
+        <IsPackable>true</IsPackable>
+        <RepositoryUrl>https://github.com/hsndmr/Mailgen</RepositoryUrl>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+        <PackageLicenseFile>LICENSE</PackageLicenseFile>
     </PropertyGroup>
     <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="8.0.6"/>
@@ -10,5 +17,17 @@
     </ItemGroup>
     <ItemGroup>
         <Folder Include="Templates\Components\"/>
+    </ItemGroup>
+    <ItemGroup>
+        <None Include="LICENSE">
+            <Pack>true</Pack>
+            <PackagePath>.</PackagePath>
+            <Visible>True</Visible>
+        </None>
+        <None Include="README.md">
+            <Pack>true</Pack>
+            <PackagePath>.</PackagePath>
+            <Visible>True</Visible>
+        </None>
     </ItemGroup>
 </Project>

@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace Mailgen.Templates.Models;
 
 public struct TableModel<TRow>

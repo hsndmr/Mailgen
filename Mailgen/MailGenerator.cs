@@ -1,3 +1,6 @@
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using Mailgen.Dtos;
 using Mailgen.Templates;
 using Mailgen.Templates.Models;
