@@ -3,10 +3,10 @@ using System.Collections.Generic;
 
 namespace Mailgen.Templates.Models;
 
-public class TableColumnModel<TRow>
+public readonly struct TableColumnModel<TRow>
 {
-    public required string Header { get; init; }
-    public required Func<TRow, object> ValueSelector { get; init; }
+    public string Header { get; init; }
+    public Func<TRow, object> ValueSelector { get; init; }
     public string? Width { get; init; }
     public string? Align { get; init; }
 

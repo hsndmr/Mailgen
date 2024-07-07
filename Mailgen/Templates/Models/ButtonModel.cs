@@ -2,11 +2,11 @@ using System.Collections.Generic;
 
 namespace Mailgen.Templates.Models;
 
-public class ButtonModel
+public readonly struct ButtonModel
 {
-    public required string Color { get; init; }
-    public required string Text { get; init; }
-    public required string Link { get; init; }
+    public string Color { get; init; }
+    public string Text { get; init; }
+    public string Link { get; init; }
 
     public Dictionary<string, string> ToDictionary()
     {

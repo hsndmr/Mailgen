@@ -3,11 +3,11 @@ using System.Linq;
 
 namespace Mailgen.Templates.Models;
 
-public class TableModel<TRow>
+public readonly struct TableModel<TRow>
 {
-    public string? Title { get; set; }
-    public required List<TableColumnModel<TRow>> Columns { get; init; }
-    public required List<TRow> Rows { get; init; }
+    public string? Title { get; init; }
+    public List<TableColumnModel<TRow>> Columns { get; init; }
+    public List<TRow> Rows { get; init; }
 
     private List<Dictionary<string, object?>> GetRowsAsDictionary()
     {

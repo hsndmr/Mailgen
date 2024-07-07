@@ -2,10 +2,10 @@ using System.Collections.Generic;
 
 namespace Mailgen.Templates.Models;
 
-public class ActionModel
+public readonly struct ActionModel
 {
     public string? Instructions { get; init; }
-    public required ButtonModel Button { get; init; }
+    public ButtonModel Button { get; init; }
 
     public Dictionary<string, object?> ToDictionary()
     {

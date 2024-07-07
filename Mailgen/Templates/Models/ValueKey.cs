@@ -2,10 +2,10 @@ using System.Collections.Generic;
 
 namespace Mailgen.Templates.Models;
 
-public class ValueKey(string key, string value)
+public readonly struct ValueKey
 {
-    public required string Key { get; init; } = key;
-    public required string Value { get; init; } = value;
+    public string Key { get; init; }
+    public string Value { get; init; }
 
     public Dictionary<string, string> ToDictionary()
     {
