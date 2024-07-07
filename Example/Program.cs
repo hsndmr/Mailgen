@@ -12,7 +12,7 @@ public class Item
     public required string Price { get; set; }
 }
 
-public class TemplateGenerator
+public static class TemplateGenerator
 {
     public static async Task GenerateReceiptTemplate()
     {
