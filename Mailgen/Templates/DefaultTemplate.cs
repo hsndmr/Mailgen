@@ -4,6 +4,6 @@ public class DefaultTemplate : BaseTemplate
 {
     protected override string GetTemplatePath()
     {
-        return "Templates/default.liquid";
+        return "Templates.default.liquid";
     }
 }
