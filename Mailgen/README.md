@@ -4,7 +4,6 @@ by <a href="https://github.com/eladnava/mailgen">https://github.com/eladnava/mai
 ## Demo
 
 ![Reset](https://raw.github.com/hsndmr/mailgen/main/screenshots/default/reset.png)
-![Receipt](https://raw.github.com/hsndmr/mailgen/main/screenshots/default/receipt.png)
 > These e-mails were generated using the built-in `default` theme.
 
 ## Usage
@@ -112,7 +111,7 @@ Console.WriteLine(html);
 
 This code would output the following HTML template:
 
-<img src="https://raw.github.com/hsndmr/mailgen/main/screenshots/default/receipt.png"  />
+![Receipt](https://raw.github.com/hsndmr/mailgen/main/screenshots/default/receipt.png)
 
 ## Example
 
