@@ -117,3 +117,14 @@ This code would output the following HTML template:
 ## Example
 
 * [Example](Example/Program.cs)
+
+## RTL Support
+
+To change the default text direction (left-to-right), simply override it as follows:
+
+```csharp
+var body = new BodyModel<Item>
+{
+    TextDirection = "rtl"
+};
+```
