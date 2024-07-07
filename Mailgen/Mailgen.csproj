@@ -15,9 +15,7 @@
         <PackageReference Include="Fluid.Core" Version="2.10.0"/>
     </ItemGroup>
     <ItemGroup>
-        <None Include="Templates\default.liquid">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </None>
+        <EmbeddedResource Include="Templates\default.liquid"/>
     </ItemGroup>
     <ItemGroup>
         <None Include="LICENSE">
