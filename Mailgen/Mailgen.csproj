@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
+﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <TargetFramework>net8.0</TargetFramework>
         <PackageId>Mailgen</PackageId>
@@ -13,8 +13,6 @@
     </PropertyGroup>
     <ItemGroup>
         <PackageReference Include="Fluid.Core" Version="2.10.0"/>
-        <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="8.0.6"/>
-        <PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.0"/>
     </ItemGroup>
     <ItemGroup>
         <None Include="Templates\default.liquid">
