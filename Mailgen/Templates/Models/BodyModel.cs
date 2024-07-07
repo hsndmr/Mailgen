@@ -5,7 +5,7 @@ namespace Mailgen.Templates.Models;
 
 public class BodyModel<TRow>
 {
-    public string TextDirection { get; set; } = "ltr";
+    public string? TextDirection { get; init; }
     public string? Title { get; init; }
 
     public List<string>? Intros { get; init; }
@@ -25,7 +25,7 @@ public class BodyModel<TRow>
         return new
         {
             product = product.ToDictionary(),
-            textDirection = TextDirection,
+            textDirection = TextDirection ?? "ltr",
             title = Title,
             intros = Intros,
             dictionaries = Dictionaries?.Select(i => i.ToDictionary()),
