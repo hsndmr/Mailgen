@@ -17,108 +17,114 @@ dotnet add package Mailgen
 
 Then, use the following code to generate an e-mail:
 
+Create an item class that will be used in the table.
+
 ```csharp
-using Mailgen;
-using Mailgen.Dtos;
-using Mailgen.Templates.Models;
-
-var createMailGeneratorDto = new CreateMailGeneratorDto
+public class Item
 {
-    Options = new TemplateOptionsModel
-    {
-        Product = new ProductModel
-        {
-            CopyrightLeft = "© 2024",
-            CopyrightRight = "All rights reserved.",
-            Link = "https://github.com/hsndmr",
-            Name = "Example Product"
-        }
-    }
+    public required string Name { get; set; }
+    public required string Description { get; set; }
+    public required string Price { get; set; }
+}
+```
+
+```csharp
+var product = new ProductModel
+{
+    CopyrightLeft = "© 2024",
+    CopyrightRight = "All rights reserved.",
+    Link = "https://github.com/hsndmr",
+    Name = "Example Product"
 };
-
-
-var mailGenerator = new MailGenerator(new HtmlGeneratorFactory(), createMailGeneratorDto);
-var generateMailDto = new GenerateMailDto<Item>
+var mailGenerator = new MailGenerator(product, new DefaultTemplate());
+var body = new BodyModel<Item>
 {
-    Body = new TemplateBodyModel<Item>
+    Title = "Hi John Appleseed,",
+    Intros =
+    [
+        "Your order has been processed successfully."
+    ],
+    Tables = new List<TableModel<Item>>
     {
-        Title = "Hi John Appleseed,",
-        Intros =
-        [
-            "Your order has been processed successfully."
-        ],
-        Tables = new List<TableModel<Item>>
+        new()
         {
-            new()
-            {
-                Columns =
-                [
-                    new TableColumnModel<Item>
-                    {
-                        Header = "Item",
-                        ValueSelector = item => item.Name,
-                        Width = "20%"
-                    },
-                    new TableColumnModel<Item>
-                    {
-                        Header = "Description",
-                        ValueSelector = item => item.Description
-                    },
-                    new TableColumnModel<Item>
-                    {
-                        Header = "Price",
-                        ValueSelector = item => item.Price,
-                        Width = "15%",
-                        Align = "right"
-                    }
-                ],
-                Rows =
-                [
-                    new Item
-                    {
-                        Name = "Node.js",
-                        Description = "Event-driven I/O server-side JavaScript environment based on V8.",
-                        Price = "$10.99"
-                    },
-                    new Item
-                    {
-                        Name = "Mailgen",
-                        Description = "A .NET library for generating HTML emails.",
-                        Price = "$1.99"
-                    }
-                ]
-            }
-        },
-        Actions =
-        [
-            new ActionModel
-            {
-                Instructions = "You can check the status of your order and more in your dashboard:",
-                Button = new ButtonModel
+            Columns =
+            [
+                new TableColumnModel<Item>
                 {
-                    Color = "#22BC66",
-                    Text = "Go to Dashboard",
-                    Link = "https://github.com/hsndmr"
+                    Header = "Item",
+                    ValueSelector = item => item.Name,
+                    Width = "20%"
+                },
+                new TableColumnModel<Item>
+                {
+                    Header = "Description",
+                    ValueSelector = item => item.Description
+                },
+                new TableColumnModel<Item>
+                {
+                    Header = "Price",
+                    ValueSelector = item => item.Price,
+                    Width = "15%",
+                    Align = "right"
                 }
+            ],
+            Rows =
+            [
+                new Item
+                {
+                    Name = "Node.js",
+                    Description = "Event-driven I/O server-side JavaScript environment based on V8.",
+                    Price = "$10.99"
+                },
+                new Item
+                {
+                    Name = "Mailgen",
+                    Description = "A .NET library for generating HTML emails.",
+                    Price = "$1.99"
+                }
+            ]
+        }
+    },
+    Actions =
+    [
+        new ActionModel
+        {
+            Instructions = "You can check the status of your order and more in your dashboard:",
+            Button = new ButtonModel
+            {
+                Color = "#22BC66",
+                Text = "Go to Dashboard",
+                Link = "https://github.com/hsndmr"
             }
-        ],
-        Outro =
-        [
-            "We thank you for your purchase."
-        ],
-        Signature = "Yours truly"
-    }
+        }
+    ],
+    Outro =
+    [
+        "We thank you for your purchase."
+    ],
+    Signature = "Yours truly"
 };
 
-var html = await mailGenerator.GenerateMail(generateMailDto);
-
+var html = await mailGenerator.GenerateMail(body);
 Console.WriteLine(html);
 ```
 
 This code would output the following HTML template:
 
-<img src="https://raw.github.com/hsndmr/mailgen/main/screenshots/default/receipt.png" height="400" />
+<img src="https://raw.github.com/hsndmr/mailgen/main/screenshots/default/receipt.png"  />
 
 ## Example
 
 * [Example](Example/Program.cs)
+
+## RTL Support
+
+To change the default text direction (left-to-right), simply override it as follows:
+
+```csharp
+var body = new BodyModel<Item>
+{
+    TextDirection = "rtl"
+};
+```

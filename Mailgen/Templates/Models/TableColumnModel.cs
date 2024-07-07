@@ -1,11 +1,31 @@
 using System;
+using System.Collections.Generic;
 
 namespace Mailgen.Templates.Models;
 
-public struct TableColumnModel<TRow>
+public class TableColumnModel<TRow>
 {
-    public string Header { get; set; }
-    public Func<TRow, object> ValueSelector { get; set; }
-    public string? Width { get; set; }
-    public string? Align { get; set; }
+    public string? Header { get; init; }
+    public Func<TRow, object>? ValueSelector { get; init; }
+    public string? Width { get; init; }
+    public string? Align { get; init; }
+
+    public string GetStyle()
+    {
+        var style = "";
+
+        style += $@"text-align:{Align ?? "left"};";
+
+        return style;
+    }
+
+    public Dictionary<string, object?> ToDictionary()
+    {
+        return new Dictionary<string, object?>
+        {
+            { "header", Header },
+            { "width", Width != null ? $@" width='{Width}'" : "" },
+            { "style", GetStyle() }
+        };
+    }
 }

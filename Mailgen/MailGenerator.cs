@@ -1,48 +1,29 @@
-using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
-using Mailgen.Dtos;
+using Fluid;
 using Mailgen.Templates;
 using Mailgen.Templates.Models;
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Web;
 
 namespace Mailgen;
 
-public class MailGenerator(IHtmlGeneratorFactory htmlGeneratorFactory, CreateMailGeneratorDto createMailGeneratorDto)
+public class MailGenerator
 {
-    private readonly HtmlRenderer _htmlRenderer = htmlGeneratorFactory.Create();
+    private readonly FluidParser _parser = new();
 
-    public async Task<string> GenerateMail<TRow>(GenerateMailDto<TRow> generateMailDto)
+    private readonly ProductModel _product;
+    private readonly ITemplate _template;
+
+    public MailGenerator(ProductModel product, ITemplate template)
     {
-        var templateModel = new TemplateModel<TRow>
-        {
-            Options = createMailGeneratorDto.Options,
-            Body = generateMailDto.Body
-        };
-
-        return await _htmlRenderer.Dispatcher.InvokeAsync(async () =>
-        {
-            var dictionary = new Dictionary<string, object?>
-            {
-                ["TemplateModel"] = templateModel
-            };
-
-            var parameters = ParameterView.FromDictionary(dictionary);
-            var output = await _htmlRenderer.RenderComponentAsync(GetTemplate<TRow>(), parameters);
-
-            return output.ToHtmlString();
-        });
+        _product = product;
+        _template = template;
     }
 
-
-    private Type GetTemplate<TRow>()
+    public async ValueTask<string> GenerateMail<TRow>(BodyModel<TRow> body)
     {
-        return typeof(DefaultTemplate<TRow>);
-    }
+        var parsedTemplate = _parser.Parse(await _template.GetTemplate());
 
-    public async ValueTask DisposeAsync()
-    {
-        await _htmlRenderer.DisposeAsync();
+        var model = _template.GetModel(_product, body);
+
+        return await parsedTemplate.RenderAsync(new TemplateContext(model));
     }
 }
