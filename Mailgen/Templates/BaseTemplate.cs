@@ -1,4 +1,7 @@
+using System;
 using System.IO;
+using System.Reflection;
+using System.Text;
 using System.Threading.Tasks;
 using Mailgen.Templates.Models;
 
@@ -28,7 +31,18 @@ public abstract class BaseTemplate : ITemplate
     {
         if (_template != null) return;
 
+        var assembly = Assembly.GetExecutingAssembly();
 
-        _template = await File.ReadAllTextAsync(GetTemplatePath());
+        var templatePath = GetTemplatePath();
+
+        var resourceName = $"{assembly.GetName().Name}.{templatePath}";
+
+        await using var stream = assembly.GetManifestResourceStream(resourceName);
+
+        if (stream == null) throw new ArgumentException($"Resource '{resourceName}' not found.");
+
+        using var reader = new StreamReader(stream, Encoding.UTF8);
+
+        _template = await reader.ReadToEndAsync();
     }
 }
