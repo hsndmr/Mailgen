@@ -1,0 +1,188 @@
+{% assign commonStyle = "font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif;box-sizing:border-box;-webkit-box-sizing:border-box;" %}
+{% assign pTagStyle = "margin-top:0;color: #74787E;font-size: 16px;line-height: 1.5em;" %}
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <style type="text/css" rel="stylesheet" media="all">
+        @media only screen and (max-width: 600px) {
+            .email-body_inner, .email-footer {
+                width: 100% !important;
+            }
+        }
+
+        @media only screen and (max-width: 500px) {
+            .button {
+                width: 100% !important;
+            }
+        }
+    </style>
+</head>
+<body dir="{{ textDirection }}"
+      style="width: 100%; height: 100%; margin: 0; line-height: 1.4;background-color:#F2F4F6;color: #74787E;-webkit-text-size-adjust:none;{{ commonStyle }}">
+<!-- Email Wrapper -->
+<table style="width:100%;margin:0;padding:0;background-color: #F2F4F6;{{ commonStyle }}" width="100%" cellpadding="0"
+       cellspacing="0">
+    <tr>
+        <td style="{{ commonStyle }}" align="center">
+            <!-- Email Content -->
+            <table style="width: 100%; margin:0; padding: 0; background-color: #F2F4F6;{{ commonStyle }}" width="100%"
+                   cellpadding="0" cellspacing="0">
+                <!-- Logo -->
+                <tr>
+                    <!-- Email Masthead -->
+                    <td style="padding:25px 0;text-align: center;{{ commonStyle }}">
+                        <!-- Email Masthead Name -->
+                        <a style="font-size: 16px;font-weight: bold;color: #2F3133;text-decoration: none;text-shadow: 0 1px 0 white;{{ commonStyle }}"
+                           href="{{ product.link }}" target="_blank">
+                            {% if product.logo != null %}
+                                {% if product.logoHeight != null %}
+                                    <img src="{{ product.logo }}"
+                                         style="height: {{ product.logoHeight }}{{ commontStyle }}" alt=""/>
+                                {% else %}
+                                    <img src="{{ product.logo }}" style="max-height: 50px;{{ commontStyle }}" alt=""/>
+                                {% endif %}
+                            {% else %}
+                                {{ product.name }}
+                            {% endif %}
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <!-- Email Body -->
+                    <td style="width: 100%;margin: 0;padding: 0;border-top: 1px solid #EDEFF2;border-bottom: 1px solid #EDEFF2;background-color: #FFF;{{ commonStyle }}"
+                        width="100%">
+                        <!-- Email Body Inner -->
+                        <table style="width: 570px;margin: 0 auto;padding: 0;text-align: center;{{ commonStyle }}"
+                               align="center" width="570" cellpadding="0" cellspacing="0">
+                            <tr>
+                                <!-- Content Cell -->
+                                <td style="padding: 33px;{{ commonStyle }}" class="content-cell">
+                                    {% if title != null %}
+                                        <h1 style="text-align:left;margin-top:0;color:  #2F3133;font-size: 19px;font-weight: bold;{{ commonStyle }}">{{ title }}</h1>
+                                    {% endif %}
+                                    {% if title != null %}
+                                        {% for intro in intros %}
+                                            <p style="text-align:left;{{ commonStyle }}{{ pTagStyle }}">{{ intro }}</p>
+                                        {% endfor %}
+                                    {% endif %}
+                                    {% if dictionaries != null %}
+                                        <!-- Body Dictionary -->
+                                        <dl style="width: 100%;overflow: hidden;margin: 20px auto 10px;padding: 0;{{ commonStyle }}">
+                                            {% for dictionary in dictionaries %}
+                                                <dt style="clear:both;color: #000;font-weight: bold;({{ commonStyle }})">
+                                                    {{ dictionary.key }}
+                                                </dt>
+                                                <dd style="margin-left: 0;margin-bottom: 10px;({{ commonStyle }})"> {{ dictionary.value }}
+                                                </dd>
+                                            {% endfor %}
+                                        </dl>
+                                    {% endif %}
+                                    <!-- Table -->
+                                    {% if tables != null %}
+                                        {% for table in tables %}
+                                            {% if table.title != null %}
+                                                <h2 style="margin-top:0;color: #2F3133;font-size: 19px;font-weight: bold;{{ commonStyle }}">{{ table.title }}</h2>
+                                            {% endif %}
+                                            <!-- Data Wrapper -->
+                                            <table style="width: 100%;margin: 30px 0 0 0;padding: 0 0 35px 0;{{ commonStyle }}"
+                                                   cellpadding="0" cellspacing="0" width="100%">
+                                                <tr>
+                                                    <td style="{{ commonStyle }}" colspan="2">
+                                                        <!-- Data Table -->
+                                                        <table style="width: 100%;margin: 0;{{ commonStyle }}"
+                                                               cellpadding="0"
+                                                               cellspacing="0" width="100%">
+                                                            <tr>
+                                                                {% for column in table.columns %}
+                                                                    <th style="padding:0 5px;border-bottom:1px solid #EDEFF2;{{ commonStyle }}{{ column.style }}"{{ column.width }}>
+                                                                        <p style="margin:0;color:#9BA2AB;font-size:12px;{{ commonStyle }}">{{ column.header }}</p>
+                                                                    </th>
+                                                                {% endfor %}
+                                                            </tr>
+                                                            {% for row in table.rows %}
+                                                                <tr>
+                                                                    {% for rowColumn in row.columns %}
+                                                                        <td style="padding:10px 5px;color:#74787E;font-size:15px;line-height:18px;{{ rowColumn.style }}{{ commonStyle }}">
+                                                                            {{ rowColumn.value }}
+                                                                        </td>
+                                                                    {% endfor %}
+                                                                </tr>
+                                                            {% endfor %}
+                                                        </table>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        {% endfor %}
+                                    {% endif %}
+                                    <!-- Actions -->
+                                    {% if actions != null %}
+                                        {% for action in actions %}
+                                            {% if action.instructions %}
+                                                <p style="text-align:left;{{ commonStyle }}{{ pTagStyle }}">{{ action.instructions }}</p>
+                                            {% endif %}
+                                            <!-- Body Action -->
+                                            <table style="width: 100%;margin: 30px auto;padding: 0;text-align: center"
+                                                   align="center" cellpadding="0" cellspacing="0">
+                                                <tr>
+                                                    <td align="center">
+                                                        <a href="{{ action.button.link }}"
+                                                           style="display:inline-block;width: 200px; border-radius:3px;color: #FFFFFF; font-size: 15px;line-height: 45px;text-align: center;text-decoration:none;-webkit-text-size-adjust: none;background-color: {{ action.button.color }};{{ commonStyle }}"
+                                                           target="_blank">
+                                                            {{ action.button.text }}
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        {% endfor %}
+                                    {% endif %}
+                                    {% if outros != null %}
+                                        <!-- Outros -->
+                                        {% for outro in outros %}
+                                            <p style="text-align:left;{{ commonStyle }}{{ pTagStyle }}">{{ outro }}</p>
+                                        {% endfor %}
+                                    {% endif %}
+                                    {% if signature != null %}
+                                        <!-- Signature -->
+                                        <p style="text-align: left;{{ pTagStyle }}{{ commonStyle }}">
+                                            {{ signature }},
+                                            <br/>
+                                            {{ product.name }}
+                                        </p>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="{{ commonStyle }}">
+                        <table style="width: 570px;margin: 0 auto;padding: 0;text-align: center;" align="center"
+                               cellpadding="0" cellspacing="0" width="570">
+                            <tr>
+                                <td style="padding:35px;{{ commonStyle }}">
+                                    <p style="font-size: 12px;margin-top: 0;color:#aeaeae;line-height: 1.5em;{{ commonStyle }}">
+                                        {% if product.copyrightLeft != null %}
+                                            {{ product.copyrightLeft }}
+                                        {% endif %}
+                                        <a style="color: #3869d4;" href="{{ product.link }}">
+                                            {{ product.name }}
+                                        </a>
+                                        {% if product.copyrightRight != null %}
+                                            {{ ". " }}{{ product.copyrightRight }}
+                                        {% endif %}
+                                    </p>
+                                </td>
+                            </tr>
+                        </table>
+
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+</body>
+</html>

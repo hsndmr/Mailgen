@@ -1,48 +1,21 @@
-using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
-using Mailgen.Dtos;
+using Fluid;
 using Mailgen.Templates;
 using Mailgen.Templates.Models;
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Web;
 
 namespace Mailgen;
 
-public class MailGenerator(IHtmlGeneratorFactory htmlGeneratorFactory, CreateMailGeneratorDto createMailGeneratorDto)
+public class MailGenerator(ProductModel product, ITemplate template)
 {
-    private readonly HtmlRenderer _htmlRenderer = htmlGeneratorFactory.Create();
+    private readonly FluidParser _parser = new();
 
-    public async Task<string> GenerateMail<TRow>(GenerateMailDto<TRow> generateMailDto)
+    public async ValueTask<string> GenerateMail<TRow>(BodyModel<TRow> body)
     {
-        var templateModel = new TemplateModel<TRow>
-        {
-            Options = createMailGeneratorDto.Options,
-            Body = generateMailDto.Body
-        };
+        var parsedTemplate = _parser.Parse(await template.GetTemplate());
 
-        return await _htmlRenderer.Dispatcher.InvokeAsync(async () =>
-        {
-            var dictionary = new Dictionary<string, object?>
-            {
-                ["TemplateModel"] = templateModel
-            };
-
-            var parameters = ParameterView.FromDictionary(dictionary);
-            var output = await _htmlRenderer.RenderComponentAsync(GetTemplate<TRow>(), parameters);
-
-            return output.ToHtmlString();
-        });
-    }
+        var model = template.GetModel(product, body);
 
 
-    private Type GetTemplate<TRow>()
-    {
-        return typeof(DefaultTemplate<TRow>);
-    }
-
-    public async ValueTask DisposeAsync()
-    {
-        await _htmlRenderer.DisposeAsync();
+        return await parsedTemplate.RenderAsync(new TemplateContext(model));
     }
 }

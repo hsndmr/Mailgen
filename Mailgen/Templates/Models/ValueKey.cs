@@ -1,7 +1,18 @@
+using System.Collections.Generic;
+
 namespace Mailgen.Templates.Models;
 
-public struct ValueKey(string key, string value)
+public class ValueKey(string key, string value)
 {
-    public string Key { get; set; } = key;
-    public string Value { get; set; } = value;
+    public required string Key { get; init; } = key;
+    public required string Value { get; init; } = value;
+
+    public Dictionary<string, string> ToDictionary()
+    {
+        return new Dictionary<string, string>
+        {
+            { "key", Key },
+            { "value", Value }
+        };
+    }
 }

@@ -12,11 +12,14 @@
         <PackageLicenseFile>LICENSE</PackageLicenseFile>
     </PropertyGroup>
     <ItemGroup>
+        <PackageReference Include="Fluid.Core" Version="2.10.0"/>
         <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="8.0.6"/>
         <PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.0"/>
     </ItemGroup>
     <ItemGroup>
-        <Folder Include="Templates\Components\"/>
+        <None Include="Templates\default.liquid">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
     </ItemGroup>
     <ItemGroup>
         <None Include="LICENSE">
