@@ -1,0 +1,64 @@
+name: Publish Mailgen Package
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        dotnet-version: [6.0.x, 8.0.x] 
+        include:
+          - dotnet-version: 6.0.x
+          - dotnet-version: 8.0.x
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: ${{ matrix.dotnet-version }}
+
+      - name: Install dependencies
+        run: dotnet restore Mailgen/Mailgen.csproj
+
+      - name: Build
+        run: dotnet build Mailgen/Mailgen.csproj --configuration Release --no-restore
+
+      - name: Test
+        run: dotnet test Mailgen/Mailgen.csproj --no-restore --verbosity normal
+
+  publish:
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Install dependencies
+        run: dotnet restore Mailgen/Mailgen.csproj
+
+      - name: Build
+        run: dotnet build Mailgen/Mailgen.csproj --configuration Release --no-restore
+
+      - name: Pack
+        run: dotnet pack Mailgen/Mailgen.csproj --configuration Release --no-restore --output nupkg
+
+      - name: Publish to NuGet
+        run: dotnet nuget push nupkg/*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
