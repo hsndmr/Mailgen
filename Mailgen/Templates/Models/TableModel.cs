@@ -14,13 +14,11 @@ public class TableModel<TRow>
     {
         if (Columns == null || Rows == null) throw new Exception("Columns and Rows must be set");
 
-
         var rows = new List<Dictionary<string, object?>>();
 
         foreach (var row in Rows)
         {
             var rowColumns = new List<Dictionary<string, object?>>();
-
 
             foreach (var column in Columns)
             {
@@ -50,7 +48,7 @@ public class TableModel<TRow>
         return new Dictionary<string, object?>
         {
             { "title", Title },
-            { "columns", Columns.Select(column => column.ToDictionary()) },
+            { "columns", Columns?.Select(column => column.ToDictionary()) },
             { "rows", GetRowsAsDictionary() }
         };
     }
